@@ -71,11 +71,16 @@ async function registerServiceWorker() {
 };
 
 async function pageLoaded() {
+  noSearchDefaultPageRender();
   registerServiceWorker();
+}
+
+async function redirectToSearch() {
   const searchUrl = await getBangredirectUrl();
   if (!searchUrl) return;
   window.location.replace(searchUrl);
 }
 
-
 window.addEventListener("load", pageLoaded);
+redirectToSearch();
+
