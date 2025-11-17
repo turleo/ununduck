@@ -14,7 +14,7 @@ self.addEventListener("install", (event) => {
       "/assets/bangs.json",
       "/assets/clipboard-check.svg",
       "/assets/clipboard.svg",
-      "/assets/search.svg",
+      "/assets/duck.svg",
     ]),
   );
 });
