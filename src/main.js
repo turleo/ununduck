@@ -1,7 +1,7 @@
 function noSearchDefaultPageRender() {
-  const copyButton = app.querySelector<HTMLButtonElement>(".copy-button");
+  const copyButton = document.querySelector(".copy-button");
   const copyIcon = copyButton.querySelector("img");
-  const urlInput = app.querySelector<HTMLInputElement>(".url-input");
+  const urlInput = document.querySelector(".url-input");
 
   copyButton.addEventListener("click", async () => {
     await navigator.clipboard.writeText(urlInput.value);
@@ -21,7 +21,7 @@ async function fetchBangs() {
 
 async function getBangredirectUrl() {
   const url = new URL(window.location.href);
-  const query = url.searchParams.get("q").trim() ?? "";
+  const query = (url.searchParams.get("q") ?? "").trim();
   if (!query) {
     noSearchDefaultPageRender();
     return null;
@@ -58,10 +58,24 @@ async function getBangredirectUrl() {
   return searchUrl;
 }
 
-async function doRedirect() {
+async function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register("/sw.js", {
+        scope: "/",
+      });
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
+  }
+};
+
+async function pageLoaded() {
+  registerServiceWorker();
   const searchUrl = await getBangredirectUrl();
   if (!searchUrl) return;
   window.location.replace(searchUrl);
 }
 
-window.addEventListener("load", doRedirect);
+
+window.addEventListener("load", pageLoaded);

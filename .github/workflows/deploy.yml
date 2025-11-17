@@ -18,6 +18,9 @@ jobs:
     steps:
       - name: ⬇️ Checkout
         uses: actions/checkout@v4
+      - name: 🚀 Set version
+        run: |
+          echo $GITHUB_RUN_ID > version
       - name: 😈 Fetch bangs
         run: |
           curl -f "https://duckduckgo.com/bang.js" > assets/bangs.json
